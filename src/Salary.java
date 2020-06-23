@@ -1,26 +1,11 @@
-/**
- * Class emulated processes with salary
- */
-public class Salary extends Message {
-
-    private final Integer salary;
+public class Salary extends Message<Integer> {
 
     /**
-     * Constructor - creating a new object with certain values
-     *
-     * @param salary - salary
+     * @param from    sender's name
+     * @param to      recipient's name
+     * @param content salary
      */
-    public Salary(String from, String to, Integer salary) {
-        super(from, to);
-        this.salary = salary;
-    }
-
-    /**
-     * Method of getting a salary
-     *
-     * @return salary
-     */
-    public Integer getSalary() {
-        return salary;
+    public Salary(String from, String to, int content) {
+        super(from, to, content);
     }
 }

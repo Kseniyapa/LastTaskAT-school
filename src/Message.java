@@ -1,38 +1,48 @@
-/**
- * General class for all massage
- */
-public class Message {
+public class Message<T> {
 
-    private final String from;
-    private final String to;
 
-    /**
-     * Constructor - creating a new object with certain values
-     *
-     * @param from - from
-     * @param to   - to
-     */
-    public Message(String from, String to) {
-        this.from = from;
-        this.to = to;
-    }
+    private String from;
+    private String to;
+    private T content;
 
     /**
-     * Method of receiving from whom the shipment is sent
+     * Method to getting the sender
      *
-     * @return returns data from whom the shipment is sent
+     * @return return the name of the sender
      */
     public String getFrom() {
         return from;
     }
 
     /**
-     * Method of receiving to whom sending
+     * Method  to getting of the recipient
      *
-     * @return returns data from the sender
+     * @return return the name of the recipient
      */
     public String getTo() {
         return to;
     }
 
+    /**
+     * Function to get the content
+     *
+     * @return return the  content of the messages\parcel
+     */
+    public T getContent() {
+        return content;
+    }
+
+
+    /**
+     * Constructs a message\parcel with content
+     *
+     * @param from    sender's name
+     * @param to      recipient's name
+     * @param content arbitrary filling
+     */
+    public Message(String from, String to, T content) {
+        this.from = from;
+        this.to = to;
+        this.content = content;
+    }
 }

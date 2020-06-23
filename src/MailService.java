@@ -1,55 +1,46 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
+
 /**
- * Class emulated mails service. Issues and receives parcels/emails
+ * The mail service that is responsible for handling the parcel(storage/dispatch)
  *
- * @param <T> - stores information about the contents (parcel / letter)
+ * @param <T> messages\parcel filling type
  */
-public class MailService<T> implements Consumer {
+public class MailService<T> implements Consumer<Message> {
 
-    private MailBox<T> mailBox;
+    /**
+     * Mailbox.Сontains all the departure (key-secondary)
+     * <p>
+     * Overridden the .get method to get empty message list for a unknown recipient
+     */
+    private Map<String, List<T>> mailBox = new HashMap<>() {
+        @Override
+        public List<T> get(Object key) {
+            return super.getOrDefault(key, new LinkedList<T>());
+        }
+    };
 
-    public MailService() {
-        this.mailBox = new MailBox<T>();
-    }
+    /**
+     * Add a messages\parcel to the service
+     *
+     * @param message messages\parcel
+     */
+    @Override
+    public void accept(Message message) {
 
-    public Map<String, List<T>> getMailBox() {
+        if (!mailBox.containsKey(message.getTo()))
+            mailBox.put(message.getTo(), new ArrayList<>());
 
-        return mailBox;
+        mailBox.get(message.getTo()).add((T) message.getContent());
     }
 
     /**
-     * this method adds a parcel to the mailbox
+     * Method to get the mailbox
      *
-     * @param o- in this case is a shipment(parcel / letter)
+     * @return return the mailbox
      */
-    @Override
-    public void accept(Object o) {
-
-        Message args = (Message) o;
-        String recipient = args.getTo();
-        T content = null;
-
-        if (this.mailBox.containsKey(recipient)) {
-
-            if (o.getClass().getName().contains(".Salary")) {
-                this.mailBox.get(recipient).add((T) ((Salary) o).getSalary());
-            } else {
-                this.mailBox.get(recipient).add((T) ((MailMessage) o).getContent());
-            }
-
-        } else {
-            List<T> newMailList = new ArrayList<T>();
-            if (newMailList.add(content)) {
-                this.mailBox.put(recipient, newMailList);
-            } else {
-                throw new RuntimeException();
-            }
-        }
-
+    public Map<String, List<T>> getMailBox() {
+        return mailBox;
     }
-
 }
